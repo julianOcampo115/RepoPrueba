@@ -1,0 +1,36 @@
+--> Creamos el usuario para ingresar al ftp seguro:
+
+sudo adduser ftpuserc
+
+--> Abrimos la configuracion de ssh en vim
+
+sudo vim /etc/ssh/sshd_config,  ahi colocamos en la ultima linea: DenyUsers ftpuserc
+
+--> Se guarda y se reinicia el sshd
+
+sudo service sshd restart
+
+--> Permisos del directorio, vamos a establecer la carpeta /var/www como el document root
+y el directorio inicial para el ftpuserc, ó crear uno en especifico
+
+mkdir /etc/ftpuserc/files
+
+sudo usermod -d /var/www ftpuserc ------ usermod -d /etc/ftpuserc ftpuserc
+
+--> Damos permisos al FTP user creado para escribir y modificar archivos en el 
+directorio definido como document root
+
+sudo chown ftpuserc:ftpuserc /var/www/html  ---------------  chown ftpuserc:ftpuserc /etc/ftpuserc/files
+
+--> Por último se configura el archivo /etc/vsftpd.conf con TLS
+
+--> Despues de eso, creamos los certificados para TLS
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
+
+sudo systemctl restart vsftpd
+
+--> Verificar en FileZilla con: server: ip publica  user: ftpuserc  password: ftpuserc  port:21
+
+Deberá establecer conexión y mostrar el directorio raiz: /var/www y poder ver tanto los subdirectorios
+html como en este caso el www.ejercicio.com  en donde se configuró otra práctica
