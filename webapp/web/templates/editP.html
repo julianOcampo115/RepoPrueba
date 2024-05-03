@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Editar Producto</h2>
+    <!-- Agregar enlace para volver a la página de inicio -->
+    <a href="/indexP" class="btn btn-primary mb-3">Regresar</a>
+    <form num="edit-product-form">
+        <input type="hidden" id="product-code" value="">
+        <div class="form-group">
+            <label for="product">Product</label>
+            <input type="text" class="form-control" id="product" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control" id="amount" required>
+        </div>
+        <div class="form-group">
+            <label for="bag">Bag</label>
+            <input type="text" class="form-control" id="bag" required>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="updateProduct()">Guardar Cambios</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/static/scriptP.js"></script>
+<script>
+    // Obtener el ID del producto de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    //const productNum = urlParams.get('id');
+    const productNum = {{id}}
+    // Obtener la información del usuario y llenar el formulario
+        fetch(`/api/products/${productNum}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('product-code').value = data.code;
+            document.getElementById('product').value = data.product;
+            document.getElementById('price').value = data.price;
+            document.getElementById('amount').value = data.amount;
+            document.getElementById('bag').value = data.bag;
+        })
+        .catch(error => console.error('Error:', error));
+</script>
+</body>
+</html>
