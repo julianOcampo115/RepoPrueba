@@ -60,6 +60,7 @@ Una vez se haya configurado el archivo Vagrantfile, se procede a ejecutar el com
 * IP: 192.168.50.3
 * Sistema operativo: Ubuntu 22.04
 * Servidor  instalado: haproxy y datadog-agent
+* Si se tiene Apache o Nginx pararlos o desinstalarlos debido a que esto interfiere en el desarrollo.
 
 **Para configurar HAProxy en el sistema, sigue los pasos a continuación**:
 
@@ -146,7 +147,7 @@ Se debe instalar el servicio de apache2 con el siguiente comando: `sudo apt-get 
 ![Datadog](datadog-agent.jpeg)
 
 Se genera una API Key, se selecciona y se copia este codigo en las 3 VM: `sudo DD_API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX DD_SITE="us5.datadoghq.com"  bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"`.
-Si se presenta algún error se recomienda eliminir estos archivos y luego volver a jecutar el comando anterior:
+Si se presenta algún error se recomienda eliminir estos archivos y luego volver a ejecutar el comando anterior:
 - Dentro del directorio: "/etc/haproxy" eliminar el "ddagent-install.log".
 - Dentro del directorio: "/tmp" eliminar cualquier archivo de texto.
 
@@ -159,5 +160,45 @@ Si se presenta algún error se recomienda eliminir estos archivos y luego volver
 		  - url http://192.168.50.3:8404/metrics
 - Verificar la conectividad: Comprueba que la máquina donde se está ejecutando el agente de Datadog puede acceder a la URL configurada. Puedes hacerlo usando curl desde la máquina del agente: `curl http://192.168.60.3:8404/metrics`
 
-5. Reiniciar HAProxy para aplicar los cambios, para esto se utiliza este codigo `sudo systemctl restart haproxy`.
+5. Reiniciar HAProxy y Datadog para aplicar los cambios, para esto se utiliza este codigo `sudo systemctl restart haproxy`, `sudo systemctl restart datadog-agent`.
 
+6. Se accede a la ip de la máquina frontend por medio de un buscador.
+![Haproxy](servidorha.jpg)  
+
+
+**Configuración de Apache en clientes**
+
+Cliente y Cliente2:
+
+- Maquina cliente y cliente2 modificamos el archivo: `sudo vim /etc/apache2/apache2.conf`
+- Despues de instalar, se debe de habilitar un modulo que se llama status: `sudo a2enmod status`
+
+- En el archivo apache2.conf se agrega lo siguiente:
+  
+		<Location /server-status>
+        		SetHandler server-status
+        		Require all granted
+		</Location>
+		ExtendedStatus On
+
+**Integracion de la Maquinas clientes**
+
+Cliente: 
+
+- Maquina cliente: `sudo vim /etc/datadog-agent/conf.d/apache.d/conf.yaml`
+
+		init_config:
+
+		instances: 
+
+	  	  - apache_status_url: http://192.168.50.2/server-status?auto
+
+ Cliente 2:
+
+ - Maquina cliente2: `sudo vim /etc/datadog-agent/conf.d/apache.d/conf.yaml`
+
+		init_config:
+
+		instances: 
+
+	  	  - apache_status_url: http://192.168.50.4/server-status?auto
