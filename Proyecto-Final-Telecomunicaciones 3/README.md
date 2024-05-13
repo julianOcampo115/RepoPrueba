@@ -15,37 +15,39 @@ Antes de comenzar con la configuración del balanceador de cargas, se deben tene
 ## Creacion del archivo Vagrantfile
 Se debe ejecutar el comando `Vagrant init` para crear el archivo y se configura asi en cualquier editor de texto:
 
-# -- mode: ruby --
-# vi: set ft=ruby :
-Vagrant.configure("2") do |config|	
-	if Vagrant.has_plugin? "vagrant-vbguest"
-		config.vbguest.no_install = true
-		config.vbguest.auto_update = false
-		config.vbguest.no_remote = true
-  	end
-        config.vm.define :servidor do |servidor|
-                servidor.vm.box = "bento/ubuntu-22.04"
-		servidor.vm.network :private_network, ip: "172.16.0.3"
-                servidor.vm.network :private_network, ip: "192.168.50.3"
-		servidor.vm.network :public_network, bridge: "ethp", :dhcp => true
-                servidor.vm.hostname = "servidor"
-                servidor.vm.boot_timeout = 1000
-        end
-        config.vm.define :cliente do |cliente|
-                cliente.vm.box = "bento/ubuntu-22.04"
-                cliente.vm.network :private_network, ip: "192.168.50.2"
-		cliente.vm.network :forwarded_port, guest: 80, host:5567
-		cliente.vm.network :forwarded_port, guest: 443, host:5568
-                cliente.vm.hostname = "cliente"
-                cliente.vm.boot_timeout = 1000
-        end
-        config.vm.define :cliente2 do |cliente2|
-                cliente2.vm.box = "bento/ubuntu-22.04"
-                cliente2.vm.network :private_network, ip: "192.168.50.4"
-                cliente2.vm.hostname = "cliente2"
-                cliente2.vm.boot_timeout = 1000
-        end
-end
+	# -- mode: ruby --
+	# vi: set ft=ruby :
+
+	Vagrant.configure("2") do |config|
+
+		if Vagrant.has_plugin? "vagrant-vbguest"
+			config.vbguest.no_install = true
+			config.vbguest.auto_update = false
+			config.vbguest.no_remote = true
+	  	end
+	        config.vm.define :servidor do |servidor|
+	                servidor.vm.box = "bento/ubuntu-22.04"
+			servidor.vm.network :private_network, ip: "172.16.0.3"
+	                servidor.vm.network :private_network, ip: "192.168.50.3"
+			servidor.vm.network :public_network, bridge: "ethp", :dhcp => true
+	                servidor.vm.hostname = "servidor"
+	                servidor.vm.boot_timeout = 1000
+	        end
+	        config.vm.define :cliente do |cliente|
+	                cliente.vm.box = "bento/ubuntu-22.04"
+	                cliente.vm.network :private_network, ip: "192.168.50.2"
+			cliente.vm.network :forwarded_port, guest: 80, host:5567
+			cliente.vm.network :forwarded_port, guest: 443, host:5568
+	                cliente.vm.hostname = "cliente"
+	                cliente.vm.boot_timeout = 1000
+	        end
+	        config.vm.define :cliente2 do |cliente2|
+	                cliente2.vm.box = "bento/ubuntu-22.04"
+	                cliente2.vm.network :private_network, ip: "192.168.50.4"
+	                cliente2.vm.hostname = "cliente2"
+	                cliente2.vm.boot_timeout = 1000
+	        end
+	end
 
 Una vez se haya configurado el archivo Vagrantfile, se procede a ejecutar el comando vagrant up para crear las tres máquinas virtuales. Se recomienda deshabilitar firewall con: sudo ufw disable.
 
@@ -92,66 +94,56 @@ Se debe instalar el servicio de apache2 con el siguiente comando: `sudo apt-get 
 1. Ingresa al directorio correspondiente: `cd /etc/haproxy`. Configura el archivo `sudo vim haproxy.cfg`.
 2. Configurar el archivo de la siguiente manera:
 
-global
-        log /dev/log    local0
-        log /dev/log    local1 notice
-        chroot /var/lib/haproxy
-        stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-        stats timeout 30s
-        user haproxy
-        group haproxy
-        daemon
-
-        # Default SSL material locations
-        ca-base /etc/ssl/certs
-        crt-base /etc/ssl/private
-
-        #stats socket *:9000 level admin expose-fd listeners
-        # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
-        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
-        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
-        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
-
-defaults
-        log     global
-        mode    http
-        option  httplog
-        option  dontlognull
-        timeout connect 5000
-        timeout client  50000
-        timeout server  50000
-        errorfile 400 /etc/haproxy/errors/400.http
-        errorfile 403 /etc/haproxy/errors/403.http
-        errorfile 408 /etc/haproxy/errors/408.http
-        errorfile 500 /etc/haproxy/errors/500.http
-        errorfile 502 /etc/haproxy/errors/502.http
-        errorfile 503 /etc/haproxy/errors/503.http
-        errorfile 504 /etc/haproxy/errors/504.http
-
-frontend http_front
-        bind *:80
-        stats enable
-        stats uri /haproxy?stats
-        #stats auth admin:admin
-        default_backend http_back
-
-backend http_back
-        balance roundrobin
-        server cliente 192.168.50.2:80 check
-        server servidorFlask 192.168.50.4:80 check
-
-frontend stats
-        bind *:8404
-        stats enable
-        stats uri /metrics
-        stats refresh 10s
-        stats show-node
-        stats show-legends
-        stats admin if TRUE
-        default_backend http_back
+		global
+		        log /dev/log    local0
+		        log /dev/log    local1 notice
+		        chroot /var/lib/haproxy
+		        stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+		        stats timeout 30s
+		        user haproxy
+		        group haproxy
+		        daemon
+		
+		defaults
+		        log     global
+		        mode    http
+		        option  httplog
+		        option  dontlognull
+		        timeout connect 5000
+		        timeout client  50000
+		        timeout server  50000
+		        errorfile 400 /etc/haproxy/errors/400.http
+		        errorfile 403 /etc/haproxy/errors/403.http
+		        errorfile 408 /etc/haproxy/errors/408.http
+		        errorfile 500 /etc/haproxy/errors/500.http
+		        errorfile 502 /etc/haproxy/errors/502.http
+		        errorfile 503 /etc/haproxy/errors/503.http
+		        errorfile 504 /etc/haproxy/errors/504.http
+		
+		frontend http_front
+		        bind *:80
+		        stats enable
+		        stats uri /haproxy?stats
+		        #stats auth admin:admin
+		        default_backend http_back
+		
+		backend http_back
+		        balance roundrobin
+		        server cliente 192.168.50.2:80 check
+		        server servidorFlask 192.168.50.4:80 check
+		
+		frontend stats
+		        bind *:8404
+		        stats enable
+		        stats uri /metrics
+		        stats refresh 10s
+		        stats show-node
+		        stats show-legends
+		        stats admin if TRUE
+		        default_backend http_back
 
 3. Se instala datadog-agent en las 3 máquinas virtuales luego de iniciar sesión en la página de la siguiente manera:
-   
+![Datadog](datadog-agent.jpg)     
 
 
 
