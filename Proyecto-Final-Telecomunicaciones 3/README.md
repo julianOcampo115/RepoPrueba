@@ -143,8 +143,21 @@ Se debe instalar el servicio de apache2 con el siguiente comando: `sudo apt-get 
 		        default_backend http_back
 
 3. Se instala datadog-agent en las 3 máquinas virtuales luego de iniciar sesión en la página de la siguiente manera:
-![Datadog](datadog-agent.jpg)     
+![Datadog](datadog-agent.jpeg)
 
-
+Se genera una API Key, se selecciona y se copia este codigo en las 3 VM: `sudo DD_API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX DD_SITE="us5.datadoghq.com"  bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"`.
+Si se presenta algún error se recomienda eliminir estos archivos y luego volver a jecutar el comando anterior:
+- Dentro del directorio: "/etc/haproxy" eliminar el "ddagent-install.log".
+- Dentro del directorio: "/tmp" eliminar cualquier archivo de texto.
 
 4. Vamos al directorio `/etc/datadog-agent/conf.d/haproxy.d/conf.yaml`, Este codigo es el enlace de Datadog con Haproxy.
+- Lo modificamos de la siguiente manera:
+
+		init_config:
+
+		instances:
+		  - url http://192.168.50.3:8404/metrics
+- Verificar la conectividad: Comprueba que la máquina donde se está ejecutando el agente de Datadog puede acceder a la URL configurada. Puedes hacerlo usando curl desde la máquina del agente: `curl http://192.168.60.3:8404/metrics`
+
+5. Reiniciar HAProxy para aplicar los cambios, para esto se utiliza este codigo `sudo systemctl restart haproxy`.
+
