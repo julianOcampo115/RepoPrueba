@@ -158,12 +158,12 @@ Si se presenta algún error se recomienda eliminir estos archivos y luego volver
 
 		instances:
 		  - url http://192.168.50.3:8404/metrics
-- Verificar la conectividad: Comprueba que la máquina donde se está ejecutando el agente de Datadog puede acceder a la URL configurada. Puedes hacerlo usando curl desde la máquina del agente: `curl http://192.168.60.3:8404/metrics`
+- Verificar la conectividad: Comprueba que la máquina donde se está ejecutando el agente de Datadog puede acceder a la URL configurada. Puedes hacerlo usando curl desde la máquina servidor: `curl http://192.168.60.3:8404/metrics`
 
 5. Reiniciar HAProxy y Datadog para aplicar los cambios, para esto se utiliza este codigo `sudo systemctl restart haproxy`, `sudo systemctl restart datadog-agent`.
 
-6. Se accede a la ip de la máquina frontend por medio de un buscador.
-![Haproxy](servidorha.jpg)  
+6. Se accede a la ip de la máquina frontend por medio de un buscador: "http://192.168.60.3:8404/metrics".
+![Haproxy](haproxy.jpeg)  
 
 
 **Configuración de Apache en clientes**
@@ -209,34 +209,35 @@ Para usar el balanceador de cargas con HAProxy y tres máquinas de Ubuntu 22.04,
 1. Accede al balanceador de cargas a través de su dirección ip en el navegador, en este caso es la maquina con el nombre de servidor "192.168.50.3".
 2. La solicitud será dirigida a uno de los dos servidores web de manera aleatoria asi:
 
-![backend1](cliente1.jpg)
-![backend2](cliente2.jpg)
+![backend1](cliente.jpeg)
+![backend2](cliente2.jpeg)
 
 
 # Configuración de Datadog
 
 Una vez creada la cuenta en la página oficial, y descargarla en tus VM se verá algo asi en tu infraestructura:
-![Infrastructure](infrestructura.jpg)
+![Infrastructure](infrestructura.jpeg)
+
+Tener en cuenta observar estas instalaciones:
+![installed](installed.jpeg)
 
 1. luego vamos al apartado de dashboards y damos click en new dashboard y creamos.
    
-![creacion.dashboard](dashboard.jpg)
+![creacion.dashboard](dashboard.jpeg)
 
 2. Una vez creado el dashboard se personaliza a los que necesitemos.
    
-![configuracion](type.jpg)   
+![monitoreocluster](monitoreocluster.jpeg)
 
 
 3. Por ultimo seleccionamos el tipo de grafico deseado, para luego mostrarlo.
-    
-![agregarmetricas](graficos.jpg)
 
 Se guarda el grafico para asi tener todo en tu cuenta y si se quiere se puede modificar a gusto. Para este caso se han creado y analizado los siguientes gráficos:
 
-![monitoreocluster](monitoreocluster.jpg)
-![haproxymonitoreo](haproxymonitoreo.jpg)
-![apachemonitoreo](apachemonitoreo.jpg)
-![systemmetrics](systemmetrics.jpg)
+
+![haproxymonitoreo](haproxymonitoreo.jpeg)
+![apachemonitoreo](apachemonitoreo.jpeg)
+![systemmetrics](systemmetrics.jpeg)
 
 # Contacto e información
 Si surgen preguntas o sugerencias sobre este proyecto, por favor contáctame a mi correo electrónico: julian.ocampo@uao.edu.co.
