@@ -25,13 +25,13 @@ Se debe ejecutar el comando `Vagrant init` para crear el archivo y se configura 
 			config.vbguest.auto_update = false
 			config.vbguest.no_remote = true
 	  	end
-	        config.vm.define :servidor do |servidor|
-	                servidor.vm.box = "bento/ubuntu-22.04"
-			servidor.vm.network :private_network, ip: "172.16.0.3"
-	                servidor.vm.network :private_network, ip: "192.168.50.3"
-			servidor.vm.network :public_network, bridge: "ethp", :dhcp => true
-	                servidor.vm.hostname = "servidor"
-	                servidor.vm.boot_timeout = 1000
+	        config.vm.define :servidorWeb do |servidorWeb|
+	                servidorWeb.vm.box = "bento/ubuntu-22.04"
+			servidorWeb.vm.network :private_network, ip: "172.16.0.3"
+	                servidorWeb.vm.network :private_network, ip: "192.168.60.3"
+			servidorWeb.vm.network :public_network, bridge: "ethp", :dhcp => true
+	                servidorWeb.vm.hostname = "servidorWeb"
+	                servidorWeb.vm.boot_timeout = 1000
 	        end
 	        config.vm.define :cliente do |cliente|
 	                cliente.vm.box = "bento/ubuntu-22.04"
@@ -41,11 +41,11 @@ Se debe ejecutar el comando `Vagrant init` para crear el archivo y se configura 
 	                cliente.vm.hostname = "cliente"
 	                cliente.vm.boot_timeout = 1000
 	        end
-	        config.vm.define :cliente2 do |cliente2|
-	                cliente2.vm.box = "bento/ubuntu-22.04"
-	                cliente2.vm.network :private_network, ip: "192.168.50.4"
-	                cliente2.vm.hostname = "cliente2"
-	                cliente2.vm.boot_timeout = 1000
+	        config.vm.define :servidorFlask do |servidorFlask|
+	                servidorFlask.vm.box = "bento/ubuntu-22.04"
+	                servidorFlask.vm.network :private_network, ip: "192.168.50.4"
+	                servidorFlask.vm.hostname = "servidorFlask"
+	                servidorFlask.vm.boot_timeout = 1000
 	        end
 	end
 
@@ -56,8 +56,8 @@ Una vez se haya configurado el archivo Vagrantfile, se procede a ejecutar el com
 ## Configuración de las máquinas virtuales.
 1. Configuración de la primera máquina virtual
 
-* Nombre de la maquina: servidor 
-* IP: 192.168.50.3
+* Nombre de la maquina: servidorWeb 
+* IP: 192.168.60.3
 * Sistema operativo: Ubuntu 22.04
 * Servidor  instalado: haproxy y datadog-agent
 * Si se tiene Apache o Nginx pararlos o desinstalarlos debido a que esto interfiere en el desarrollo.
@@ -162,13 +162,16 @@ Si se presenta algún error se recomienda eliminir estos archivos y luego volver
 
 5. Reiniciar HAProxy y Datadog para aplicar los cambios, para esto se utiliza este codigo `sudo systemctl restart haproxy`, `sudo systemctl restart datadog-agent`.
 
-6. Se accede a la ip de la máquina frontend por medio de un buscador: "http://192.168.60.3:8404/metrics".
+6. Se accede a la ip de la máquina frontend por medio de un buscador: `"http://192.168.60.3:8404/metrics"`.
 ![Haproxy](haproxy.jpeg)  
 
 
 **Configuración de Apache en clientes**
 
-Cliente y Cliente2:
+Cliente y Cliente2: (cliente y servidorFlask)
+
+![backend1](cliente.jpeg)
+![backend2](cliente2.jpeg)
 
 - Maquina cliente y cliente2 modificamos el archivo: `sudo vim /etc/apache2/apache2.conf`
 - Despues de instalar, se debe de habilitar un modulo que se llama status: `sudo a2enmod status`
@@ -206,11 +209,12 @@ Cliente:
 # Instrucciones de uso
 Para usar el balanceador de cargas con HAProxy y tres máquinas de Ubuntu 22.04, a continuación se detallan los siguientes pasos:
 
-1. Accede al balanceador de cargas a través de su dirección ip en el navegador, en este caso es la maquina con el nombre de servidor "192.168.50.3".
+1. Accede al balanceador de cargas a través de su dirección ip en el navegador, en este caso es la maquina con el nombre de servidor "192.168.60.3".
 2. La solicitud será dirigida a uno de los dos servidores web de manera aleatoria asi:
 
-![backend1](cliente.jpeg)
-![backend2](cliente2.jpeg)
+![backend1](clienteser.jpeg)
+
+![backend2](cliente2ser.jpeg)
 
 
 # Configuración de Datadog
