@@ -219,14 +219,15 @@ Una vez creada la cuenta en la página oficial, y descargarla en tus VM se verá
 ![Infrastructure](infraestructura.jpeg)
 
 Tener en cuenta observar estas instalaciones:
-![installed](installed.jpeg)
+![installed](Installed.jpeg)
 
 1. luego vamos al apartado de dashboards y damos click en new dashboard y creamos.
    
 ![creacion.dashboard](dashboard.jpeg)
 
 2. Una vez creado el dashboard se personaliza a los que necesitemos.
-   
+
+* Dashboard de monitoreo de cluster personalizado
 ![monitoreocluster](monitoreocluster.jpeg)
 
 
@@ -234,9 +235,13 @@ Tener en cuenta observar estas instalaciones:
 
 Se guarda el grafico para asi tener todo en tu cuenta y si se quiere se puede modificar a gusto. Para este caso se han creado y analizado los siguientes gráficos:
 
-
+* Dashboard de monitoreo de HAproxy
 ![haproxymonitoreo](haproxymonitoreo.jpeg)
+
+* Dashboard de monitoreo de Apache
 ![apachemonitoreo](apachemonitoreo.jpeg)
+
+* Dashboard de monitoreo de las métricas del sistema
 ![systemmetrics](systemmetrics.jpeg)
 
 # Contacto e información
