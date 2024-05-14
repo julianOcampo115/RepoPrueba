@@ -76,7 +76,7 @@ Con estos pasos, habrás instalado y configurado HAProxy en tu sistema Ubuntu. A
 
 
 2. Configuración de la segunda máquina virtual
-* Nombre de la maquina: backend1
+* Nombre de la maquina: backend1 (cliente)
 * IP: 192.168.50.2
 * Sistema operativo: Ubuntu 22.04
 * Servidor web instalado: Apache  
@@ -84,7 +84,7 @@ Se debe instalar el servicio de apache2 con el siguiente comando: `sudo apt-get 
  
 
 3. Configuración de la tercera máquina virtual
-* Nombre de la maquina: backend2
+* Nombre de la maquina: backend2 (servidorFlask)
 * IP: 192.168.50.4
 * Sistema operativo: Ubuntu 22.04
 * Servidor web instalado: Apache  
@@ -147,7 +147,7 @@ Se debe instalar el servicio de apache2 con el siguiente comando: `sudo apt-get 
 ![Datadog](datadog-agent.jpeg)
 
 Se genera una API Key, se selecciona y se copia este codigo en las 3 VM: `sudo DD_API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX DD_SITE="us5.datadoghq.com"  bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"`.
-Si se presenta algún error se recomienda eliminir estos archivos y luego volver a ejecutar el comando anterior:
+Si se presenta algún error se recomienda eliminar estos archivos y luego volver a ejecutar el comando anterior:
 - Dentro del directorio: "/etc/haproxy" eliminar el "ddagent-install.log".
 - Dentro del directorio: "/tmp" eliminar cualquier archivo de texto.
 
