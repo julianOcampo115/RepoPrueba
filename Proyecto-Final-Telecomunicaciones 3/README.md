@@ -216,7 +216,7 @@ Para usar el balanceador de cargas con HAProxy y tres máquinas de Ubuntu 22.04,
 # Configuración de Datadog
 
 Una vez creada la cuenta en la página oficial, y descargarla en tus VM se verá algo asi en tu infraestructura:
-![Infrastructure](infrestructura.jpeg)
+![Infrastructure](infraestructura.jpeg)
 
 Tener en cuenta observar estas instalaciones:
 ![installed](installed.jpeg)
