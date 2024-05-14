@@ -229,6 +229,13 @@ Tener en cuenta observar estas instalaciones:
    
 ![creacion.dashboard](dashboard.jpeg)
 
+## Para observar de manera correcta los datos del monitoreo anterior se hizo uso de la aplicación JMeter el cual es un proyecto de Apache que puede ser utilizado como una herramienta de prueba de carga para analizar y medir el rendimiento de una variedad de servicios, con énfasis en aplicaciones web.##
+
+* Para esto se configuró de la siguiente manera:
+  - Se establecieron 20 usuarios para que accedan a la página: `192.168.60.3` cada segundo en un tiempo indeterminado, es decir, hasta que el usuario decida parar las peticiones, y se obtuvo lo siguiente tanto en JMeter cono en el monitoreo de los dashboards:
+  
+![jmeter](jmeter.jpeg)
+
 2. Una vez creado el dashboard se personaliza a los que necesitemos.
 
 * Dashboard de monitoreo de cluster personalizado
@@ -247,6 +254,7 @@ Se guarda el grafico para asi tener todo en tu cuenta y si se quiere se puede mo
 
 * Dashboard de monitoreo de las métricas del sistema
 ![systemmetrics](systemmetrics.jpeg)
+
 
 # Contacto e información
 Si surgen preguntas o sugerencias sobre este proyecto, por favor contáctame a mi correo electrónico: julian.ocampo@uao.edu.co.
