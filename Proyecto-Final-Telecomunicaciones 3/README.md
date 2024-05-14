@@ -229,10 +229,12 @@ Tener en cuenta observar estas instalaciones:
    
 ![creacion.dashboard](dashboard.jpeg)
 
-## Para observar de manera correcta los datos del monitoreo anterior se hizo uso de la aplicación JMeter el cual es un proyecto de Apache que puede ser utilizado como una herramienta de prueba de carga para analizar y medir el rendimiento de una variedad de servicios, con énfasis en aplicaciones web.##
+## Para observar de manera correcta los datos del monitoreo anterior se hizo uso de la aplicación JMeter.
+
+Este es un proyecto de Apache que puede ser utilizado como una herramienta de prueba de carga para analizar y medir el rendimiento de una variedad de servicios, con énfasis en aplicaciones web.
 
 * Para esto se configuró de la siguiente manera:
-  - Se establecieron 20 usuarios para que accedan a la página: `192.168.60.3` cada segundo en un tiempo indeterminado, es decir, hasta que el usuario decida parar las peticiones, y se obtuvo lo siguiente tanto en JMeter cono en el monitoreo de los dashboards:
+- Se establecieron 20 usuarios para que accedan a la página: `192.168.60.3` cada segundo en un tiempo indeterminado, es decir, hasta que el usuario decida parar las peticiones, y se obtuvo lo siguiente tanto en JMeter cono en el monitoreo de los dashboards:
   
 ![jmeter](jmeter.jpeg)
 
