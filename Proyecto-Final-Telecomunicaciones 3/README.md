@@ -11,6 +11,7 @@ Antes de comenzar con la configuración del balanceador de cargas, se deben tene
 2. Tener privilegios de superusuario en las tres máquinas, que para eso se usa el comando "sudo -i".
 3. Tener instalado HAProxy en la máquina que actuará como balanceador de cargas.
 4. Crear una cuenta en la página oficial de Datadog: https://www.datadoghq.com/ e instalar la aplicación.
+5. Si la máquina que hace de servidor tiene instalado apache o nginx, pararlo debido a que esto interfiere con el servicio haproxy.
 
 ## Creacion del archivo Vagrantfile
 Se debe ejecutar el comando `Vagrant init` para crear el archivo y se configura asi en cualquier editor de texto:
