@@ -1,0 +1,33 @@
+# -- mode: ruby --
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+	if Vagrant.has_plugin? "vagrant-vbguest"
+		config.vbguest.no_install = true
+		config.vbguest.auto_update = false
+		config.vbguest.no_remote = true
+  	end
+        config.vm.define :servidorWeb do |servidorWeb|
+                servidorWeb.vm.box = "bento/ubuntu-22.04"
+		servidorWeb.vm.network :private_network, ip: "172.16.0.3"
+                servidorWeb.vm.network :private_network, ip: "192.168.60.3"
+		servidorWeb.vm.network :public_network, bridge: "ethp", :dhcp => true
+                servidorWeb.vm.hostname = "servidorWeb"
+                servidorWeb.vm.boot_timeout = 1000
+        end
+        config.vm.define :cliente do |cliente|
+                cliente.vm.box = "bento/ubuntu-22.04"
+                cliente.vm.network :private_network, ip: "192.168.50.2"
+		cliente.vm.network :forwarded_port, guest: 80, host:5567
+		cliente.vm.network :forwarded_port, guest: 443, host:5568
+                cliente.vm.hostname = "cliente"
+                cliente.vm.boot_timeout = 1000
+        end
+        config.vm.define :servidorFlask do |servidorFlask|
+                servidorFlask.vm.box = "bento/ubuntu-22.04"
+                servidorFlask.vm.network :private_network, ip: "192.168.50.4"
+                servidorFlask.vm.hostname = "servidorFlask"
+                servidorFlask.vm.boot_timeout = 1000
+        end
+end
