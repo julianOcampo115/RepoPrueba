@@ -158,7 +158,7 @@ Si se presenta algún error se recomienda eliminar estos archivos y luego volver
 		init_config:
 
 		instances:
-		  - url http://192.168.50.3:8404/metrics
+		  - url http://192.168.60.3:8404/metrics
 - Verificar la conectividad: Comprueba que la máquina donde se está ejecutando el agente de Datadog puede acceder a la URL configurada. Puedes hacerlo usando curl desde la máquina servidor: `curl http://192.168.60.3:8404/metrics`
 
 5. Reiniciar HAProxy y Datadog para aplicar los cambios, para esto se utiliza este codigo `sudo systemctl restart haproxy`, `sudo systemctl restart datadog-agent`.
